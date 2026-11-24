@@ -30,7 +30,9 @@ export class MyDurableObject extends DurableObject<Env> {
     }
 
     const storedCount = await this.ctx.storage.get<number>("count");
-    const count = Number.isSafeInteger(storedCount) ? storedCount : 0;
+    const count = typeof storedCount === "number" && Number.isSafeInteger(storedCount)
+      ? storedCount
+      : 0;
 
     if (path === "/increment") {
       const next = count + 1;
